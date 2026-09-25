@@ -126,7 +126,8 @@
    "exclus": null,
    "firma_cheie": "dedeman",
    "si_in": [],
-   "alte_surse": []
+   "alte_surse": [],
+   "dublura_lui": "dedeman:cef179f9-d068-44fc-9a93-fcca5101c17c"
   },
   "ejobs:1983883": {
    "id": "ejobs:1983883",
@@ -1728,7 +1729,9 @@
    "sal_din_descriere": false,
    "tip": "intern",
    "permis": "D",
-   "etichete": [],
+   "etichete": [
+    "contract temporar"
+   ],
    "motive": [
     {
      "p": -6,
@@ -1743,11 +1746,15 @@
      "t": "E pentru transport de persoane (autobuz, taxi, protocol)"
     },
     {
+     "p": -6,
+     "t": "Contract doar pe o perioadă (sezonier)"
+    },
+    {
      "p": 0,
      "t": "Salariul nu e scris în anunț"
     }
    ],
-   "scor": 17,
+   "scor": 11,
    "verdict": "Slab",
    "exclus": "transport persoane",
    "firma_cheie": "fundatia centrul roman pentru intreprinderi mici mijlocii",
@@ -8656,6 +8663,7 @@
    "tip": "local",
    "permis": "B",
    "etichete": [
+    "contract temporar",
     "abonament medical",
     "tichete de masă"
    ],
@@ -8671,6 +8679,10 @@
     {
      "p": -10,
      "t": "Doar dubă (categoria B), plătit de obicei mai slab"
+    },
+    {
+     "p": -6,
+     "t": "Contract doar pe o perioadă (perioada determinata)"
     },
     {
      "p": 4,
@@ -8689,8 +8701,8 @@
      "t": "Angajații dau firmei nota 3,4 din 5 (433 păreri pe UndeLucram)"
     }
    ],
-   "scor": 69,
-   "verdict": "Potrivit",
+   "scor": 63,
+   "verdict": "Merită verificat",
    "exclus": "doar categoria B (dubă)",
    "firma_cheie": "dr max",
    "si_in": [],
@@ -21864,6 +21876,79 @@
    "firma_cheie": null,
    "si_in": [],
    "alte_surse": []
+  },
+  "dedeman:cef179f9-d068-44fc-9a93-fcca5101c17c": {
+   "id": "dedeman:cef179f9-d068-44fc-9a93-fcca5101c17c",
+   "sursa": "Dedeman",
+   "titlu": "Sofer profesionist – Ploiesti 1 - Obor",
+   "firma": "DEDEMAN",
+   "firma_confirmata": true,
+   "orase": [
+    "Ploiesti"
+   ],
+   "zona": "prahova",
+   "url": "https://recrutare.dedeman.ro/detalii-post?job=sofer+profesionist&id=cef179f9-d068-44fc-9a93-fcca5101c17c",
+   "salariu_text": "",
+   "sal_min": null,
+   "sal_max": null,
+   "publicat": "/Date(1790024400000)/",
+   "expira": null,
+   "descriere": "Contract: perioada determinata - 3 luni\nNe dorim colegi entuziasti pentru postul de Sofer profesionist .\n Experienta in domeniul transportului de marfa este importanta.\n Permisul de conducere categoriile B, C, E, atestatul de transport marfa si cardul tahograf digital sunt obligatorii.\n Ne asteptam sa ai studii medii si sa iti placa sa lucrezi in echipa.\n Este necesar sa fii harnic, onest si responsabil.\n Ne dorim sa ai disponibilitate la efort fizic.\n Suntem pregatiti sa te sprijinim prin: \n instruire continua - Te vom sustine cu un program personalizat de dezvoltare a competentelor. \n oportunitati de promovare - Te vom anunta, cu prioritate, despre posibilitatile de avansare in cadrul companiei. \n recompensarea dedicarii - Suntem pregatiti sa-ti oferim bonusuri lunare atractive, in functie de nivelul de dedicare in realizarea sarcinilor. In plus apreciem si colaborarea pe termen lung oferindu-ti si alte beneficii. \n Locul tau este intr-o echipa de succes. Vino sa: \n realizezi transportul marfii la domiciliul clientului conform programarii stabilite \n participi la incarcarea si descarcarea marfii destinata transportului, respectand conditiile de manipulare si depozitare \n verifici marfa transportata din punct de vedere cantitativ si calitativ \n te asiguri de buna functionare a autovehiculului. \n Doar persoanele selectate in urma analizarii aplicatiilor vor fi contactate si invitate sa participe la interviu.",
+   "prima_data": "2026-09-25T13:17:10+00:00",
+   "ultima_data": "2026-09-25T13:17:10+00:00",
+   "activ": true,
+   "sal_din_descriere": false,
+   "tip": "local",
+   "permis": "C/CE",
+   "etichete": [
+    "contract temporar",
+    "efort fizic",
+    "firmă preferată"
+   ],
+   "motive": [
+    {
+     "p": 15,
+     "t": "Prahova, aproape de Ploiești"
+    },
+    {
+     "p": 15,
+     "t": "Distribuție locală, acasă în fiecare seară"
+    },
+    {
+     "p": 3,
+     "t": "Camion (C / C+E), cum are el permis"
+    },
+    {
+     "p": -6,
+     "t": "Contract doar pe o perioadă (perioada determinata - 3 luni)"
+    },
+    {
+     "p": -4,
+     "t": "Încarcă/descarcă marfa singur (efort fizic)"
+    },
+    {
+     "p": 0,
+     "t": "Salariul nu e scris în anunț"
+    },
+    {
+     "p": 8,
+     "t": "Firmă din lista preferată (Dedeman)"
+    },
+    {
+     "p": 8,
+     "t": "Angajații dau firmei nota 4,1 din 5 (786 păreri pe UndeLucram)"
+    }
+   ],
+   "scor": 89,
+   "verdict": "Foarte potrivit",
+   "exclus": null,
+   "firma_cheie": "dedeman",
+   "si_in": [
+    "Ploiești"
+   ],
+   "alte_surse": [
+    "eJobs"
+   ]
   }
  },
  "rulari": [
@@ -21956,9 +22041,15 @@
    "surse": {
     "olx": 215
    }
+  },
+  {
+   "data": "2026-09-25T13:17:10+00:00",
+   "surse": {
+    "dedeman": 1
+   }
   }
  ],
- "actualizat": "2026-09-25T13:07:34+00:00",
+ "actualizat": "2026-09-25T13:17:10+00:00",
  "firme": {
   "insta recruit": {
    "nume": "INSTA RECRUIT GROUP S.R.L.",

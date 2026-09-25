@@ -175,6 +175,8 @@ RE_PROGRAM_RAU = re.compile(
 RE_NEG_PROGRAM = re.compile(r"\b(fara|nu (se )?(lucreaza|lucram|lucrezi|lucra)|nu|exclus)\s+(\w+\s+){0,3}"
                             r"(noapte|noaptea|weekend\w*|sambata|duminica)")
 
+RE_DETERMINAT = re.compile(r"perioada determinata( - \d+ luni)?|contract (pe|de) \d+ luni|\bsezonier\w*|"
+                           r"perioada limitata|contract temporar")
 RE_GREU = re.compile(r"descarcare manuala|manipulare manuala|incarcare manuala|hamal|efort fizic|"
                      r"\bcarat\b|manipularea marfii|descarcarea marfii|incarcarea si descarcarea")
 RE_HELPER = re.compile(r"\bhelper\b|cu ajutor\b|insotit de (un )?ajutor|echipaj de 2|descarcarea se face de|"
@@ -270,6 +272,11 @@ def clasifica(job, firme):
         etichete.append("noapte/weekend")
         scor += plus(motive, -12, "Se lucrează și noaptea sau în weekend („" + ", ".join(sorted(rele))[:60] + "”)")
 
+    m_det = RE_DETERMINAT.search(txt)
+    if m_det:
+        etichete.append("contract temporar")
+        scor += plus(motive, -6, f"Contract doar pe o perioadă ({m_det.group(0)})")
+
     # --- efort, beneficii
     if RE_HELPER.search(txt):
         etichete.append("are ajutor la descărcat")
@@ -361,10 +368,13 @@ def marcheaza_dubluri(joburi):
         j.pop("dublura_lui", None)
         if not j["activ"]:
             continue
-        cheie = re.sub(r"[^a-z0-9]", "", fara_diacritice(j["titlu"]))[:60] + "|" + cheie_firma(j["firma"])[:12]
+        if cheie_firma(j["firma"]) == "dedeman":  # eJobs: „Sofer profesionist - Ploiesti - Obor”, portal: „Sofer profesionist – Ploiesti 1 - Obor”
+            cheie = "dedeman|" + fara_diacritice(j["titlu"]).split(" ")[0] + "|" + fara_diacritice(" ".join(j["orase"][:1]))
+        else:
+            cheie = re.sub(r"[^a-z0-9]", "", fara_diacritice(j["titlu"]))[:60] + "|" + cheie_firma(j["firma"])[:12]
         grupe.setdefault(cheie, []).append(j)
     for grup in grupe.values():
-        grup.sort(key=lambda j: (-j["scor"], j["id"]))
+        grup.sort(key=lambda j: (j["sursa"] not in SURSE_DIRECTE, -j["scor"], j["id"]))
         grup[0]["si_in"] = sorted({o for j in grup[1:] for o in j["orase"]} - set(grup[0]["orase"]))[:10]
         grup[0]["alte_surse"] = sorted({j["sursa"] for j in grup[1:]} - {grup[0]["sursa"]})
         for j in grup[1:]:
@@ -558,7 +568,34 @@ def sursa_olx():
     return joburi
 
 
-SURSE = {"ejobs": sursa_ejobs, "bestjobs": sursa_bestjobs, "olx": sursa_olx}
+def sursa_dedeman():
+    """Portalul propriu Dedeman: aici se aplică fără cont (formular cu email, telefon, CV)."""
+    d = fetch("https://recrutare.dedeman.ro/api/sinapsi/jobs", data={"request": {"FilterByCity": ""}})
+    joburi = []
+    for j in d["d"]["JobAnnounces"]:
+        if not e_job_de_sofer(j["Function"]) or j.get("AcceptsApplicants") is False:
+            continue
+        orase = [j.get("City") or "", j.get("WorkingPoint") or ""]
+        zona = zona_din_orase([orase[0]]) or zona_din_orase([orase[1].split(" - ")[0]])
+        if not zona:
+            continue
+        contract = j.get("ContractType") or ""
+        desc = f"Contract: {contract}\n" + text_din_html(j.get("AnnounceText", ""))
+        joburi.append({
+            "id": f"dedeman:{j['Id']}", "sursa": "Dedeman", "titlu": f"{j['Function']} – {j.get('WorkingPoint') or j.get('City')}",
+            "firma": "DEDEMAN", "firma_confirmata": True, "orase": [j.get("City") or ""], "zona": zona,
+            "url": "https://recrutare.dedeman.ro/detalii-post?" + urllib.parse.urlencode(
+                {"job": j["Function"].lower(), "id": j["Id"]}),
+            "salariu_text": "", "sal_min": None, "sal_max": None,
+            "publicat": j.get("PublishDate"), "expira": None, "descriere": desc[:4000],
+        })
+    print(f"   Dedeman: {len(joburi)} joburi de șofer în zonă")
+    return joburi
+
+
+SURSE = {"ejobs": sursa_ejobs, "bestjobs": sursa_bestjobs, "olx": sursa_olx, "dedeman": sursa_dedeman}
+# surse unde se aplică direct la angajator; la dubluri, ele câștigă
+SURSE_DIRECTE = {"Dedeman"}
 
 
 # --------------------------------------------------------------- recenzii
