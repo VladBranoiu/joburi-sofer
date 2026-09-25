@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joburi de șofer</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Joburi șofer">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<style>
+  :root {
+    --bg: #f3f4f6; --card: #ffffff; --text: #111827; --muted: #4b5563; --line: #d1d5db;
+    --accent: #1d4ed8; --accent-bg: #dbeafe;
+    --good: #166534; --good-bg: #dcfce7; --ok: #1e40af; --ok-bg: #dbeafe;
+    --mid: #854d0e; --mid-bg: #fef3c7; --bad: #991b1b; --bad-bg: #fee2e2; --star: #d97706;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115; --card: #1a1d23; --text: #f3f4f6; --muted: #b0b8c4; --line: #3a404a;
+      --accent: #7aa7ff; --accent-bg: #1e2a44;
+      --good: #6ee7a0; --good-bg: #143322; --ok: #93b4ff; --ok-bg: #1b2744;
+      --mid: #fcd34d; --mid-bg: #3b2f0e; --bad: #fca5a5; --bad-bg: #3f1717; --star: #fbbf24;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 19px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .page { max-width: 860px; margin: 0 auto; padding: 18px 16px 80px; }
+  h1 { font-size: 30px; margin: 0; }
+  .updated { color: var(--muted); font-size: 16px; margin: 2px 0 16px; }
+
+  .tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+  .tabs button { font: inherit; font-weight: 650; padding: 14px 8px; border-radius: 14px; border: 2px solid var(--line);
+                 background: var(--card); color: var(--text); cursor: pointer; }
+  .tabs button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (max-width: 560px) { .tabs button { font-size: 16px; padding: 12px 4px; } }
+
+  .box { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; margin-bottom: 14px; }
+  .label { font-weight: 650; margin-bottom: 8px; }
+  .seg { display: flex; gap: 8px; flex-wrap: wrap; }
+  .seg button { font: inherit; font-size: 17px; padding: 10px 16px; border-radius: 999px; border: 2px solid var(--line);
+                background: var(--bg); color: var(--text); cursor: pointer; }
+  .seg button.on { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 650; }
+  .summary { font-size: 18px; margin: 4px 2px 14px; }
+
+  .job { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 16px; margin-bottom: 16px; }
+  .top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+  .pill { font-size: 16px; font-weight: 700; padding: 4px 12px; border-radius: 999px; }
+  .v1 { background: var(--good-bg); color: var(--good); } .v2 { background: var(--ok-bg); color: var(--ok); }
+  .v3 { background: var(--mid-bg); color: var(--mid); } .v4 { background: var(--bad-bg); color: var(--bad); }
+  .new { background: #7c3aed; color: #fff; }
+  .job h2 { font-size: 23px; line-height: 1.25; margin: 4px 0 10px; }
+  .row { display: flex; gap: 10px; margin: 5px 0; align-items: baseline; }
+  .row .ic { width: 28px; flex: none; text-align: center; }
+  .money { font-weight: 700; font-size: 21px; color: var(--good); }
+  .stars { color: var(--star); letter-spacing: 1px; }
+  .lists { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; margin-top: 10px; }
+  @media (max-width: 640px) { .lists { grid-template-columns: 1fr; } }
+  .lists ul { margin: 0; padding: 0; list-style: none; }
+  .lists li { padding: 3px 0 3px 30px; position: relative; font-size: 17px; }
+  .lists li::before { position: absolute; left: 0; top: 2px; }
+  .pro li::before { content: "✅"; } .con li::before { content: "⚠️"; }
+  .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .btn { font: inherit; font-weight: 650; font-size: 18px; padding: 12px 18px; border-radius: 12px; cursor: pointer;
+         border: 2px solid var(--line); background: var(--bg); color: var(--text); text-decoration: none; display: inline-block; }
+  .btn.main { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.on { background: var(--good-bg); border-color: var(--good); color: var(--good); }
+  @media (max-width: 560px) {
+    .buttons .btn { flex: 1 1 40%; text-align: center; padding: 14px 10px; }
+    .buttons .btn.main { flex-basis: 100%; }
+    .job { padding: 16px 14px; }
+    .page { padding: 14px 10px 60px; }
+  }
+  details { margin-top: 12px; }
+  summary { cursor: pointer; color: var(--accent); font-size: 17px; }
+  .desc { white-space: pre-wrap; font-size: 16px; color: var(--muted); max-height: 380px; overflow: auto;
+          border-left: 4px solid var(--line); padding: 4px 12px; margin-top: 8px; }
+  .muted { color: var(--muted); font-size: 16px; }
+  .empty { text-align: center; color: var(--muted); padding: 40px 10px; font-size: 20px; }
+
+  .firm { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; margin-bottom: 14px; }
+  .firm h2 { font-size: 22px; margin: 0 0 6px; }
+  .bigstars { font-size: 28px; color: var(--star); letter-spacing: 2px; }
+  .grade { font-size: 26px; font-weight: 800; margin-left: 8px; }
+  .sat { display: inline-block; font-weight: 700; padding: 3px 12px; border-radius: 999px; margin: 6px 0; }
+  .quote { border-left: 4px solid var(--line); padding: 4px 12px; margin: 10px 0; font-size: 17px; }
+  .quote .who { color: var(--muted); font-size: 15px; }
+  .src { font-size: 15px; color: var(--muted); margin-top: 4px; }
+  a { color: var(--accent); }
+
+  .adv { margin-top: 30px; text-align: center; }
+  .adv button { font: inherit; font-size: 15px; background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; }
+  .advbox { font-size: 16px; }
+  .advbox .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 4px 16px; }
+  .advbox label { display: flex; gap: 8px; align-items: center; padding: 2px 0; cursor: pointer; }
+  .advbox input[type=search], .advbox select { font: inherit; width: 100%; padding: 8px 10px; border-radius: 8px;
+         border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+  .advbox h4 { margin: 12px 0 4px; font-size: 14px; text-transform: uppercase; color: var(--muted); letter-spacing: .04em; }
+  .pts { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; }
+  textarea.note { width: 100%; margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px;
+                  font: inherit; font-size: 17px; background: var(--bg); color: var(--text); }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>🚛 Joburi de șofer</h1>
+  <div class="updated" id="updated"></div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="view"></div>
+
+  <div class="adv"><button id="advToggle"></button></div>
+</div>
+
+<script src="data/joburi.js"></script>
+<script>
+const DB = window.JOBURI || { joburi: {}, rulari: [], firme: {} };
+const JOBS = Object.values(DB.joburi);
+const FIRME = DB.firme || {};
+const ZONA_TXT = { prahova: "Prahova", ilfov: "Ilfov, lângă București", bucuresti: "București" };
+const VERDICT_CLS = { "Foarte potrivit": "v1", "Potrivit": "v2", "Merită verificat": "v3", "Slab": "v4" };
+const TIP_TXT = {
+  local: ["🏠", "Acasă în fiecare seară (distribuție locală)"],
+  intern: ["🚚", "Curse prin țară, poate dormi și pe drum"],
+  necunoscut: ["❓", "Nu scrie dacă e local sau prin țară, întrebați la telefon"],
+  international: ["🌍", "Curse în străinătate"],
+};
+
+// ---------- stare (în browser)
+function load(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
+function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+const DEF = { tab: "joburi", zona: "pi", doarSal: false, doarNoi: false, firma: null,
+              adv: false, q: "", scorMin: 50, sort: "scor", aratExclus: false, aratAscunse: false,
+              aratDubluri: false, aratExpirate: false, tip: { local: true, intern: true, necunoscut: true } };
+// tabul și firma aleasă nu se țin minte: pagina pornește mereu pe „Joburi”
+let F = Object.assign(structuredClone(DEF), load("sj2_filtre", {}), { tab: "joburi", firma: null });
+if (["joburi", "pastrate", "firme"].includes(location.hash.slice(1))) F.tab = location.hash.slice(1);
+let ST = load("sj_stare", {});
+const st = id => ST[id] || (ST[id] = {});
+
+// ---------- utilitare
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const lei = n => Number(n).toLocaleString("ro-RO");
+const zi = s => s ? new Date(s).toLocaleDateString("ro-RO", { day: "numeric", month: "long" }) : "";
+const norm = s => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+// rotunjim o singură dată, la o zecimală, ca stelele, cifra și eticheta să spună același lucru
+const r1 = n => Math.round(n * 10) / 10;
+const stele = n => "★".repeat(Math.round(r1(n))) + "☆".repeat(5 - Math.round(r1(n)));
+const nota = n => r1(n).toFixed(1).replace(".", ",");
+const primaRulare = DB.rulari?.[0]?.data || "";
+const eNou = j => Date.parse(j.prima_data) - Date.parse(primaRulare) > 12 * 36e5 && Date.now() - Date.parse(j.prima_data) < 3 * 864e5;
+const firmaDe = j => j.firma_cheie ? FIRME[j.firma_cheie] : null;
+
+function satisfactie(ul) {
+  if (!ul?.nota || !ul.evaluari) return null;
+  const n = r1(ul.nota);
+  const [txt, cls] = n >= 4 ? ["Angajații sunt mulțumiți", "v1"] : n >= 3.5 ? ["Angajații sunt destul de mulțumiți", "v2"]
+    : n >= 3 ? ["Păreri împărțite", "v3"] : ["Mulți angajați sunt nemulțumiți", "v4"];
+  return { txt, cls, putine: ul.evaluari < 5 };
+}
+
+// ---------- filtrare
+function trece(j) {
+  const s = st(j.id);
+  if (F.tab === "pastrate") return !!s.pastrat;
+  if (F.firma) return F.firma.split("|").includes(j.firma_cheie) && j.activ && !j.dublura_lui && !j.exclus;
+  if (!j.activ && !F.aratExpirate) return false;
+  if (j.dublura_lui && !F.aratDubluri) return false;
+  if (j.exclus && !F.aratExclus) return false;
+  if (s.ascuns && !F.aratAscunse) return false;
+  if (F.zona === "p" && j.zona !== "prahova") return false;
+  if (F.zona === "pi" && j.zona === "bucuresti") return false;
+  if (F.doarSal && !j.sal_max) return false;
+  if (F.doarNoi && !eNou(j)) return false;
+  if (F.adv) {
+    if (j.scor < F.scorMin) return false;
+    if (F.tip[j.tip] === false) return false;
+    if (F.q) {
+      const hay = norm([j.titlu, j.firma, j.orase.join(" "), j.descriere].join(" "));
+      if (!norm(F.q).split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+  } else if (j.scor < 50) return false;
+  return true;
+}
+
+// ---------- carduri joburi
+function cardJob(j) {
+  const s = st(j.id);
+  const f = firmaDe(j), ul = f?.undelucram, sat = satisfactie(ul);
+  const pro = j.motive.filter(m => m.p > 0 && !/^Salariu|^Prahova|^Ilfov|^București|^Distribuție locală|^Curse prin țară/.test(m.t));
+  const con = j.motive.filter(m => m.p < 0 && !/^Salariu/.test(m.t));
+  const salariu = j.sal_max
+    ? `<span class="money">${j.sal_min && j.sal_min !== j.sal_max ? lei(j.sal_min) + " – " : ""}${lei(j.sal_max)} lei</span> pe lună, în mână`
+      + (j.sal_din_descriere ? ` <span class="muted">(scris în text)</span>` : "")
+    : `<span class="muted">Salariul nu e scris în anunț, întrebați la telefon</span>`;
+  const orase = j.orase.slice(0, 3).join(", ") + (j.orase.length > 3 ? " și altele" : "");
+  const firmaRand = j.firma
+    ? `<b>${esc(j.firma)}</b>` + (sat ? ` · <span class="stars">${stele(ul.nota)}</span> ${nota(ul.nota)} din 5 de la angajați` +
+        ` <a href="#" data-firma="${esc(j.firma_cheie)}">(vezi părerile)</a>` : "")
+    : `<span class="muted">Firma nu e scrisă</span>`;
+  const [tipIc, tipTxt] = TIP_TXT[j.tip];
+  const txtMotiv = m => F.adv ? m.t : m.t.replace(/\s*\(„.*”\)\s*$/, "");
+  const pts = m => F.adv ? ` <span class="pts">(${m.p > 0 ? "+" : ""}${m.p})</span>` : "";
+  return `<article class="job" data-id="${esc(j.id)}">
+    <div class="top">
+      <span class="pill ${VERDICT_CLS[j.verdict]}">${j.verdict === "Foarte potrivit" ? "✔ " : ""}${j.verdict}${F.adv ? " · " + j.scor : ""}</span>
+      ${eNou(j) ? `<span class="pill new">NOU</span>` : ""}
+      ${!j.activ ? `<span class="pill v4">expirat</span>` : ""}
+      ${j.exclus ? `<span class="pill v4">${esc(j.exclus)}</span>` : ""}
+    </div>
+    <h2>${esc(j.titlu)}</h2>
+    <div class="row"><span class="ic">🏢</span><span>${firmaRand}</span></div>
+    <div class="row"><span class="ic">📍</span><span>${esc(orase)} <span class="muted">(${ZONA_TXT[j.zona]})</span></span></div>
+    <div class="row"><span class="ic">💰</span><span>${salariu}</span></div>
+    <div class="row"><span class="ic">${tipIc}</span><span>${tipTxt}</span></div>
+    ${pro.length || con.length ? `<div class="lists">
+      <ul class="pro">${pro.map(m => `<li>${esc(txtMotiv(m))}${pts(m)}</li>`).join("")}</ul>
+      <ul class="con">${con.map(m => `<li>${esc(txtMotiv(m))}${pts(m)}</li>`).join("")}</ul></div>` : ""}
+    <div class="buttons">
+      <a class="btn main" href="${esc(j.url)}" target="_blank" rel="noopener">📄 Deschide anunțul</a>
+      <button class="btn ${s.pastrat ? "on" : ""}" data-a="pastrat">${s.pastrat ? "★ Păstrat" : "☆ Păstrez"}</button>
+      ${s.ascuns ? `<button class="btn" data-a="ascuns">↩ Arată din nou</button>`
+                 : `<button class="btn" data-a="ascuns">✕ Nu mă interesează</button>`}
+    </div>
+    ${F.tab === "pastrate" || F.adv ? `<div class="buttons">
+      <button class="btn ${s.aplicat ? "on" : ""}" data-a="aplicat">${s.aplicat ? "✓ Am sunat / aplicat pe " + zi(s.aplicat) : "Am sunat / aplicat"}</button>
+      <button class="btn" data-a="nota">✎ Notiță</button></div>` : ""}
+    ${s.nota !== undefined ? `<textarea class="note" rows="2" placeholder="ex: am vorbit cu dl. Popescu, revine luni">${esc(s.nota)}</textarea>` : ""}
+    <details><summary>Citește tot textul anunțului</summary>
+      <div class="muted" style="margin-top:6px">De pe ${esc(j.sursa)}${j.publicat ? ", publicat pe " + zi(j.publicat) : ""}${j.si_in?.length ? " · apare și în " + esc(j.si_in.join(", ")) : ""}</div>
+      <div class="desc">${esc(j.descriere || "(anunțul nu are text)")}</div>
+    </details>
+  </article>`;
+}
+
+// ---------- pagina de joburi
+function viewJoburi() {
+  let list = JOBS.filter(trece);
+  const by = { scor: (a, b) => b.scor - a.scor || (b.sal_max || 0) - (a.sal_max || 0),
+               data: (a, b) => (b.publicat || b.prima_data).localeCompare(a.publicat || a.prima_data),
+               sal: (a, b) => (b.sal_max || 0) - (a.sal_max || 0) || b.scor - a.scor }[F.adv ? F.sort : "scor"];
+  list.sort(by);
+  const foarte = list.filter(j => j.verdict === "Foarte potrivit").length;
+  let head = "";
+  if (F.firma) {
+    const f = FIRME[F.firma.split("|")[0]];
+    head = `<div class="box"><b>Joburi la ${esc(f?.nume || F.firma)}</b>
+      <div class="buttons"><button class="btn" id="backAll">← Înapoi la toate joburile</button></div></div>`;
+  } else if (F.tab === "joburi") {
+    const seg = (key, opts) => `<div class="seg">${opts.map(([v, l]) =>
+      `<button data-f="${key}" data-v="${v}" class="${F[key] === v ? "on" : ""}">${l}</button>`).join("")}</div>`;
+    head = `<div class="box">
+      <div class="label">Unde?</div>
+      ${seg("zona", [["p", "Doar Prahova"], ["pi", "Prahova + Ilfov"], ["t", "Și București"]])}
+      <div class="label" style="margin-top:12px">Arată doar:</div>
+      <div class="seg">
+        <button data-t="doarSal" class="${F.doarSal ? "on" : ""}">💰 cu salariul scris</button>
+        <button data-t="doarNoi" class="${F.doarNoi ? "on" : ""}">🆕 anunțuri noi</button>
+      </div>
+      ${F.adv ? advBox() : ""}
+    </div>`;
+  }
+  const rez = F.tab === "pastrate"
+    ? (list.length ? `Ai păstrat ${list.length} ${list.length === 1 ? "anunț" : "anunțuri"}.` : "")
+    : list.length === 1 ? `Am găsit <b>un singur</b> job.`
+    : `Am găsit <b>${list.length}</b> joburi${foarte ? `, dintre care <b>${foarte}</b> foarte potrivite` : ""}. Cele mai bune sunt primele.`;
+  return head + (rez ? `<p class="summary">${rez}</p>` : "") + (list.length ? list.map(cardJob).join("")
+    : `<div class="empty">${F.tab === "pastrate" ? "Nu ai păstrat încă niciun anunț. Apasă „☆ Păstrez” la un job care îți place." : "Niciun job cu alegerile astea. Încearcă „Și București” sau scoate „cu salariul scris”."}</div>`);
+}
+
+// ---------- pagina de firme și păreri
+function viewFirme() {
+  const joburiPe = {};
+  JOBS.forEach(j => { if (j.activ && !j.dublura_lui && !j.exclus && j.firma_cheie) (joburiPe[j.firma_cheie] ||= []).push(j); });
+  // aceeași firmă poate apărea sub mai multe nume („FAN Courier Romania” / „FAN COURIER EXPRESS SRL”)
+  const grupe = {};
+  Object.entries(joburiPe).forEach(([k, js]) => {
+    const f = FIRME[k] || { nume: js[0].firma };
+    const g = f.undelucram?.id ? "ul" + f.undelucram.id : k;
+    if (grupe[g]) { grupe[g].js.push(...js); grupe[g].chei.push(k); } else grupe[g] = { k, chei: [k], js: [...js], f };
+  });
+  const lista = Object.values(grupe);
+  // întâi firmele cu destule păreri (5+), după notă; cele cu 1–4 păreri după ele
+  const sigur = x => (x.f.undelucram?.evaluari || 0) >= 5;
+  const cuNota = lista.filter(x => x.f.undelucram?.nota || x.f.google?.nota)
+    .sort((a, b) => sigur(b) - sigur(a) || (b.f.undelucram?.nota || 0) - (a.f.undelucram?.nota || 0) || b.js.length - a.js.length);
+  const fara = lista.filter(x => !(x.f.undelucram?.nota || x.f.google?.nota)).sort((a, b) => a.f.nume.localeCompare(b.f.nume));
+
+  const card = ({ chei, js, f }) => {
+    const ul = f.undelucram, g = f.google, sat = satisfactie(ul);
+    return `<div class="firm">
+      <h2>${esc(f.nume)}</h2>
+      ${ul?.nota ? `<div><span class="bigstars">${stele(ul.nota)}</span><span class="grade">${nota(ul.nota)}</span> <span class="muted">din 5</span></div>
+        <span class="sat ${sat.cls}">${sat.txt}</span>
+        <div>Nota dată de <b>${ul.evaluari}</b> ${ul.evaluari === 1 ? "angajat" : "angajați"} pe UndeLucram${ul.recomanda_pct ? `, ${ul.recomanda_pct}% o recomandă` : ""}.
+        ${sat.putine ? `<br><span class="muted">Sunt prea puține păreri ca să fie sigur.</span>` : ""}</div>
+        ${ul.sigur ? "" : `<div class="src">Potrivire aproximativă: pe UndeLucram apare ca „${esc(ul.nume)}”.</div>`}
+        <div class="src"><a href="${esc(ul.url)}" target="_blank" rel="noopener">Citește ce spun angajații pe UndeLucram ↗</a></div>` : ""}
+      ${g?.nota ? `<div style="margin-top:12px"><b>Google Maps (păreri de la clienți):</b> <span class="stars">${stele(g.nota)}</span> ${nota(g.nota)} din 5, ${g.evaluari} recenzii</div>
+        ${(g.comentarii || []).map(c => `<div class="quote">„${esc(c.text)}”<div class="who">${stele(c.nota || 0)} · ${esc(c.autor)}${c.cand ? ", " + esc(c.cand) : ""}</div></div>`).join("")}
+        <div class="src"><a href="${esc(g.url)}" target="_blank" rel="noopener">Vezi pe Google Maps ↗</a></div>` : ""}
+      <div class="buttons"><button class="btn main" data-firma="${esc(chei.join("|"))}">🚚 ${js.length} ${js.length === 1 ? "job deschis" : "joburi deschise"}</button></div>
+    </div>`;
+  };
+  const googleOn = Object.values(FIRME).some(f => f.google);
+  return `<div class="box">Aici vezi <b>ce spun angajații</b> despre firmele care caută șoferi acum.
+      Notele sunt de pe <b>UndeLucram.ro</b>, unde angajații dau note de la 1 la 5.
+      ${googleOn ? "Unde există, apar și părerile clienților de pe Google Maps." : ""}
+      Nota firmei intră și în calculul „cât de potrivit” e fiecare job.</div>
+    ${cuNota.map(card).join("")}
+    ${fara.length ? `<div class="box"><div class="label">Firme fără păreri găsite (${fara.length})</div>
+      <div class="muted">Sunt de obicei firme mici sau persoane fizice. Nu înseamnă că sunt rele, doar că nu știm nimic despre ele.</div>
+      <p>${fara.map(x => `<a href="#" data-firma="${esc(x.chei.join("|"))}">${esc(x.f.nume)}</a> (${x.js.length})`).join(" · ")}</p></div>` : ""}`;
+}
+
+// ---------- filtre avansate (pentru cine configurează)
+function advBox() {
+  const cb = (k, l, path) => `<label><input type="checkbox" data-c="${path || k}" ${(path ? F.tip[k] !== false : F[k]) ? "checked" : ""}> ${l}</label>`;
+  return `<div class="advbox">
+    <h4>Caută în text</h4><input type="search" id="q" value="${esc(F.q)}" placeholder="firmă, oraș, cuvânt…">
+    <h4>Scor minim: <span id="scorv">${F.scorMin}</span></h4><input type="range" id="scorMin" min="0" max="100" step="5" value="${F.scorMin}" style="width:100%">
+    <h4>Tip curse</h4><div class="grid">${cb("local", "local", "tip.local")}${cb("intern", "prin țară", "tip.intern")}${cb("necunoscut", "nespecificat", "tip.necunoscut")}</div>
+    <h4>Arată și</h4><div class="grid">${cb("aratExclus", "străinătate / B / autobuz")}${cb("aratAscunse", "ascunse")}${cb("aratDubluri", "dubluri")}${cb("aratExpirate", "expirate")}</div>
+    <h4>Ordonează</h4><select id="sort">${[["scor", "după potrivire"], ["data", "cele mai noi"], ["sal", "după salariu"]]
+      .map(([v, l]) => `<option value="${v}" ${F.sort === v ? "selected" : ""}>${l}</option>`).join("")}</select>
+    <div class="buttons"><button class="btn" id="exp">Salvează notițele (copie)</button><button class="btn" id="imp">Încarcă notițele</button></div>
+    <input type="file" id="impFile" accept=".json" hidden>
+  </div>`;
+}
+
+// ---------- randare + evenimente
+function render(keepScroll) {
+  save("sj2_filtre", F);
+  const nPast = JOBS.filter(j => st(j.id).pastrat).length;
+  document.getElementById("tabs").innerHTML = [["joburi", "🚚 Joburi"], ["pastrate", `★ Păstrate (${nPast})`], ["firme", "🏢 Firme și păreri"]]
+    .map(([k, l]) => `<button data-tab="${k}" class="${F.tab === k ? "on" : ""}">${l}</button>`).join("");
+  document.getElementById("view").innerHTML = F.tab === "firme" ? viewFirme() : viewJoburi();
+  document.getElementById("advToggle").textContent = F.adv ? "Ascunde setările avansate" : "Setări avansate";
+  if (!keepScroll) window.scrollTo(0, 0);
+}
+
+document.addEventListener("click", e => {
+  const t = e.target;
+  const tab = t.closest("[data-tab]");
+  if (tab) { F.tab = tab.dataset.tab; F.firma = null; return render(); }
+  const firma = t.closest("[data-firma]");
+  if (firma) { e.preventDefault(); F.firma = firma.dataset.firma; F.tab = "joburi"; return render(); }
+  if (t.id === "backAll") { F.firma = null; return render(); }
+  if (t.id === "advToggle") { F.adv = !F.adv; return render(true); }
+  const seg = t.closest("[data-f]");
+  if (seg) { F[seg.dataset.f] = seg.dataset.v; return render(true); }
+  const tog = t.closest("[data-t]");
+  if (tog) { F[tog.dataset.t] = !F[tog.dataset.t]; return render(true); }
+  const act = t.closest("[data-a]");
+  if (act) {
+    const id = act.closest(".job").dataset.id, s = st(id), a = act.dataset.a;
+    if (a === "nota") s.nota = s.nota ?? "";
+    else if (a === "aplicat") s.aplicat = s.aplicat ? undefined : new Date().toISOString();
+    else s[a] = !s[a];
+    save("sj_stare", ST); return render(true);
+  }
+  if (t.id === "exp") {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(ST, null, 1)], { type: "application/json" }));
+    a.download = `joburi-sofer-notite-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+  }
+  if (t.id === "imp") document.getElementById("impFile").click();
+});
+document.addEventListener("change", async e => {
+  const t = e.target;
+  if (t.dataset.c) {
+    if (t.dataset.c.startsWith("tip.")) F.tip[t.dataset.c.slice(4)] = t.checked; else F[t.dataset.c] = t.checked;
+    return render(true);
+  }
+  if (t.id === "sort") { F.sort = t.value; return render(true); }
+  if (t.id === "impFile" && t.files[0]) {
+    try { Object.assign(ST, JSON.parse(await t.files[0].text())); save("sj_stare", ST); render(true); } catch { alert("Fișier invalid"); }
+  }
+});
+let qTimer;
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.matches("textarea.note")) { st(t.closest(".job").dataset.id).nota = t.value; save("sj_stare", ST); }
+  if (t.id === "scorMin") { F.scorMin = +t.value; document.getElementById("scorv").textContent = t.value; clearTimeout(qTimer); qTimer = setTimeout(() => render(true), 250); }
+  if (t.id === "q") { F.q = t.value; clearTimeout(qTimer); qTimer = setTimeout(() => { render(true); const q = document.getElementById("q"); q.focus(); q.setSelectionRange(q.value.length, q.value.length); }, 400); }
+});
+
+const zileVechime = DB.actualizat ? (Date.now() - Date.parse(DB.actualizat)) / 864e5 : 99;
+document.getElementById("updated").textContent = DB.actualizat
+  ? "Actualizat pe " + new Date(DB.actualizat).toLocaleString("ro-RO", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" })
+    + (zileVechime > 3 ? " · unele anunțuri s-ar putea să fie deja ocupate" : "")
+  : "Nu există date încă.";
+render();
+</script>
+</body>
+</html>
