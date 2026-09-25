@@ -42,3 +42,12 @@ Excluse automat: curse în străinătate, doar categoria B, transport persoane.
 
 Salvatele, aplicările și notițele stau în browser (localStorage); „Setări avansate” → „Salvează notițele” face o copie.
 Indeed și Jooble blochează accesul automat, așa că nu sunt incluse.
+
+## Online
+- Site: https://vladbranoiu.github.io/joburi-sofer/ (GitHub Pages, din branch-ul `main`).
+- **GitHub Actions** (`.github/workflows/actualizare.yml`) rulează zilnic la 04:00 UTC: eJobs, BestJobs și recenziile.
+  Se poate porni și manual din tabul Actions → „Actualizare anunțuri” → Run workflow.
+- **OLX blochează serverele GitHub**, așa că OLX se actualizează de pe PC: sarcina Windows „Joburi sofer - OLX”
+  (zilnic la 10:00 și la logare) rulează `sincronizare-olx.sh` într-o copie separată (`~/.local/share/joburi-sofer-sync`).
+  Jurnal: `~/.local/share/joburi-sofer-sync.log`. Dacă PC-ul stă oprit, anunțurile OLX dispar treptat în 14 zile, iar restul merge normal.
+- Înainte să modifici ceva local: `git pull` (datele se schimbă zilnic pe GitHub).
