@@ -123,6 +123,12 @@ const JOBS = Object.values(DB.joburi);
 const FIRME = DB.firme || {};
 const ZONA_TXT = { prahova: "Prahova", ilfov: "Ilfov, lângă București", bucuresti: "București" };
 const VERDICT_CLS = { "Foarte potrivit": "v1", "Potrivit": "v2", "Merită verificat": "v3", "Slab": "v4" };
+// ce trebuie să știe înainte să apese „Deschide anunțul”
+const CUM_APLICI = {
+  eJobs: "Anunțul se citește fără cont. Pentru „Aplică”, eJobs cere un cont gratuit (email + CV).",
+  BestJobs: "Anunțul se citește fără cont. Pentru „Aplică”, BestJobs cere un cont gratuit (email + CV).",
+  OLX: "Pe OLX de obicei se poate suna direct: butonul „Sună” sau „Arată numărul”. Mesajele cer cont.",
+};
 const TIP_TXT = {
   local: ["🏠", "Acasă în fiecare seară (distribuție locală)"],
   intern: ["🚚", "Curse prin țară, poate dormi și pe drum"],
@@ -226,6 +232,7 @@ function cardJob(j) {
       ${s.ascuns ? `<button class="btn" data-a="ascuns">↩ Arată din nou</button>`
                  : `<button class="btn" data-a="ascuns">✕ Nu mă interesează</button>`}
     </div>
+    <div class="muted" style="margin-top:8px">ℹ️ ${esc(CUM_APLICI[j.sursa] || "")}</div>
     ${F.tab === "pastrate" || F.adv ? `<div class="buttons">
       <button class="btn ${s.aplicat ? "on" : ""}" data-a="aplicat">${s.aplicat ? "✓ Am sunat / aplicat pe " + zi(s.aplicat) : "Am sunat / aplicat"}</button>
       <button class="btn" data-a="nota">✎ Notiță</button></div>` : ""}
